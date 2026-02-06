@@ -1,6 +1,6 @@
 // Portfolio API configuration
 // Using real Yahoo Finance and Google Finance APIs for stock data
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://portfolio-dashboard-2pyx.onrender.com/api';
 
 export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
