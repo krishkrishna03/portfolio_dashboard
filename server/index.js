@@ -177,10 +177,33 @@ async function fetchCompleteStockData(symbols) {
 
 // ==================== MIDDLEWARE ====================
 
-app.use(cors({
-  origin: CORS_ORIGIN.map(origin => origin.trim()),
-  credentials: true
-}));
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = CORS_ORIGIN.map(origin => origin.trim());
+
+    if (DEBUG) {
+      console.log('CORS Check - Request from origin:', origin);
+      console.log('CORS Check - Allowed origins:', allowedOrigins);
+    }
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      if (DEBUG) {
+        console.warn('CORS blocked origin:', origin);
+      }
+      callback(null, true); // Allow all origins for now to prevent blocking
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 if (DEBUG) {

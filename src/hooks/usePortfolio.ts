@@ -27,20 +27,27 @@ export function usePortfolio(autoRefreshInterval = 15000): UsePortfolioReturn {
     try {
       setError(null);
 
+      console.log('Fetching portfolio data...');
+
       // Fetch enriched holdings data
       const enrichedHoldings = await fetchFromAPI<EnrichedHolding[]>('/holdings');
+      console.log('Holdings fetched:', enrichedHoldings.length);
       setHoldings(enrichedHoldings);
 
       // Fetch sector summaries
       const summaries = await fetchFromAPI<SectorSummary[]>('/sector-summaries');
+      console.log('Sector summaries fetched:', summaries.length);
       setSectorSummaries(summaries);
 
       // Fetch portfolio summary
       const summary = await fetchFromAPI<PortfolioSummary>('/portfolio-summary');
+      console.log('Portfolio summary fetched:', summary);
       setPortfolioSummary(summary);
     } catch (err) {
       console.error('Error enriching holdings:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load portfolio data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load portfolio data';
+      console.error('Detailed error:', errorMessage);
+      setError(`Unable to connect to API server. Please ensure the backend is running. Error: ${errorMessage}`);
     }
   }, []);
 
