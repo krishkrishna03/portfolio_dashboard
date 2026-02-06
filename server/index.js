@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000'];
+const CORS_ORIGIN = process.env.CORS_ORIGIN?.split(',') || ['https://financedashboardk.netlify.app','http://localhost:5173', 'http://localhost:3000'];
 const DEBUG = process.env.DEBUG === 'true';
 
 // ==================== FINANCE API FUNCTIONS ====================
@@ -415,3 +415,4 @@ app.listen(PORT, () => {
     throw err;
   }
 });
+
